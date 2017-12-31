@@ -1,0 +1,9 @@
+#GENERIC
+*.swp
+*.log
+*.diff
+npm-debug.log
+
+.DS_Store
+node_modules/
+WIP/
