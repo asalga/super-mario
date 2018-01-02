@@ -1,19 +1,21 @@
 export default class Timer {
 
-    constructor(deltaTime = 1 / 60) {
+    constructor(timeStep = 1 / 60) {
 
         let accTime = 0;
         let lastTime = 0;
+        self = this;
 
-        this.updateProxy = (time) => {
+        this.updateProxy = function(time){
+        	// console.log(time);
             accTime += (time - lastTime) / 1000;
 
-            while (accTime > deltaTime) {
-                this.update(deltaTime);
-                accTime -= deltaTime;
+            while (accTime > timeStep) {
+                self.update(timeStep);
+                accTime -= timeStep;
             }
             lastTime = time;
-            this.enqueue();
+            self.enqueue();
         };
     }
 

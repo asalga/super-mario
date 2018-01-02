@@ -17,7 +17,7 @@ Promise
     ])
     .then(([mario, backgroundSprites, level]) => {
 
-        const gravity = 30;
+        const gravity = 2000;
         mario.pos.set(64, 180);
         mario.vel.set(200, -600);
 
@@ -29,11 +29,10 @@ Promise
         comp.layers.push(spriteLayer);
 
         const timer = new Timer(1 / 60);
-        timer.update = function udpate(deltaTime) {
+        timer.update = function (timeStep) {
+            mario.update(timeStep);
+            mario.vel.y += gravity * timeStep;
             comp.draw(context);
-            mario.update(deltaTime);
-            mario.draw(context);
-            mario.vel.y += gravity;
         };
 
         timer.start();
