@@ -9,7 +9,7 @@ function drawBackground(background, context, sprites) {
     });
 }
 
-export default function createBackgroundLayer(backgrounds, sprites) {
+export function createBackgroundLayer(backgrounds, sprites) {
     const buffer = document.createElement('canvas');
     buffer.width = 256;
     buffer.height = 240;
@@ -20,5 +20,12 @@ export default function createBackgroundLayer(backgrounds, sprites) {
 
     return function drawBackgroundLayer(context) {
         context.drawImage(buffer, 0, 0);
+    }
+}
+
+
+export function createSpriteLayer(entity) {
+    return function(context) {
+        entity.draw(context);
     }
 }
