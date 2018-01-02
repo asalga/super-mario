@@ -4,10 +4,16 @@ import { createMario } from './Entities.js';
 import { loadBackgroundSprites } from './Sprites.js';
 import { createBackgroundLayer, createSpriteLayer } from './layers.js';
 import Timer from './Timer.js';
+import Keyboard from './KeyboardState.js';
+
+const input = new Keyboard();
+input.addMapping(32, function(){
+    console.log('test');
+});
+input.listenTo(window);
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
-
 
 Promise
     .all([
@@ -28,10 +34,10 @@ Promise
         const spriteLayer = createSpriteLayer(mario);
         comp.layers.push(spriteLayer);
 
-        const timer = new Timer(1 / 60);
-        timer.update = function (timeStep) {
-            mario.update(timeStep);
-            mario.vel.y += gravity * timeStep;
+        const timer = new Timer();
+        timer.update = function (deltaTime) {
+            mario.update(deltaTime);
+            mario.vel.y += gravity * deltaTime;
             comp.draw(context);
         };
 
