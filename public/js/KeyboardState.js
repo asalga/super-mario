@@ -16,7 +16,7 @@ export default class KeyboardState {
     }
 
     handleEvent(event) {
-        const { keyCode } = event;
+        const { keyCode, type } = event;
 
         if (!this.keyMap.has(keyCode)) {
             return;
@@ -24,21 +24,17 @@ export default class KeyboardState {
 
         event.preventDefault();
 
-        const keyState = event.type === 'keydown' ? PRESSED : RELEASED;
+        const keyState = type === 'keydown' ? PRESSED : RELEASED;
 
         if (this.keyStates.get(keyCode) === keyState) {
             return;
-            // this.keyMap.get(keyCode)();
         }
 
         this.keyStates.set(keyCode, keyState);
-        console.log(this.keyStates);
-
         this.keyMap.get(keyCode)(keyState);
     }
 
     listenTo(window) {
-
     	let self = this;
         ['keyup', 'keydown'].forEach(function(eventName) {
             window.addEventListener(eventName, (event) => {
