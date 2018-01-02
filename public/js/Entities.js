@@ -6,12 +6,10 @@ export function createMario() {
     return loadMarioSprite()
     .then(sprite => {
         const mario = new Entity();
-        mario.pos.set(64, 180);
-        mario.vel.set(2, -10);
-
-        mario.update = function() {
-            this.pos.x += this.vel.x;
-            this.pos.y += this.vel.y;
+       
+        mario.update = function(delta) {
+            this.pos.x += this.vel.x * delta;
+            this.pos.y += this.vel.y * delta;
         };
 
         mario.draw = function(context) {
