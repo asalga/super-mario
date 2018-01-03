@@ -8,7 +8,12 @@ let ctx = cvs.getContext('2d');
 
 window.addEventListener('keydown', function(event) {
 
-	const delta = 10;
+    const delta = 10;
+
+    function move(x, y) {
+        subject.x += x;
+        subject.y += y;
+    }
 
     let { keyCode } = event;
     if (keyCode === 37) {
@@ -22,7 +27,8 @@ window.addEventListener('keydown', function(event) {
     }
     if (keyCode === 40) {
         move(0, delta);
-    }});
+    }
+});
 
 let obstacles = new Array(30).fill(0).map(function() {
     return new Rect({
@@ -35,12 +41,7 @@ let obstacles = new Array(30).fill(0).map(function() {
 
 let subject = new Rect({ x: 0, y: 0, w: 40, h: 40 });
 
-function move(x, y) {
-    subject.x += x;
-    subject.y += y;
 
-    console.log(doesIntersect(subject, subject));
-}
 
 function renderSubject() {
     ctx.fillStyle = 'rgba(0,0,255,255)';
@@ -49,7 +50,7 @@ function renderSubject() {
 
 function renderObjects() {
     obstacles.forEach(o => {
-        ctx.fillStyle = 'rgba(128, 128, 128, 255)';
+        ctx.fillStyle = o.c;
         ctx.fillRect(o.x, o.y, o.w, o.h);
     });
 }
@@ -60,7 +61,14 @@ function clear() {
 }
 
 function update() {
-    subject.x += 1 / 100;
+    
+	obstacles.forEach(function(o){
+		 o.c = 'rgba(128,128,128,255';
+		if( doesIntersect(subject, o)	){
+			o.c = 'rgba(255,0,0,255';
+		}
+	})
+    
 }
 
 function render() {
