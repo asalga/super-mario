@@ -1,7 +1,6 @@
 import Compositor from './Compositor.js';
 import { loadLevel } from './loaders.js';
 import { createMario } from './Entities.js';
-
 import Timer from './Timer.js';
 import Keyboard from './KeyboardState.js';
 
@@ -30,11 +29,10 @@ Promise
         input.listenTo(window);
 
         const gravity = 2000;
-        mario.pos.set(64, 180);
+        mario.pos.set(64, 64);
 
         const timer = new Timer();
         timer.update = function(deltaTime) {
-            // mario.update(deltaTime);
             level.update(deltaTime);
             mario.vel.y += gravity * deltaTime; 
             level.comp.draw(context);

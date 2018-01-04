@@ -4,10 +4,6 @@ export default class Compositor {
     }
 
     draw(context) {
-        this.layers.forEach(
-            function(layerFunc) {
-                layerFunc(context);
-            }
-        );
+        this.layers.forEach(layerFunc => layerFunc(context));
     }
 }
