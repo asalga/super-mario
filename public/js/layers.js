@@ -1,5 +1,4 @@
 function drawBackground(background, context, sprites) {
-
     background.ranges.forEach(([x1, x2, y1, y2]) => {
         for (let x = x1; x < x2; ++x) {
             for (let y = y1; y < y2; ++y) {
@@ -23,9 +22,9 @@ export function createBackgroundLayer(backgrounds, sprites) {
     }
 }
 
-
-export function createSpriteLayer(entity) {
+// entities is a set
+export function createSpriteLayer(entitySet) {
     return function(context) {
-        entity.draw(context);
+        entitySet.forEach(e => e. draw(context));
     }
 }
