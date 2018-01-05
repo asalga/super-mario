@@ -28,7 +28,7 @@ Promise
         });
         input.listenTo(window);
 
-        const gravity = 2000;
+        const gravity = 20;
         mario.pos.set(64, 64);
 
         const timer = new Timer();
