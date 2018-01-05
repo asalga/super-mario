@@ -8,7 +8,7 @@ export default class TileCollider {
     test(entity) {
         const match = this.resolver.matchByPosition(entity.pos.x, entity.pos.y);
         if (match) {
-            console.log(match, match.tile);
+            // console.log(match, match.tile);
         }
     }
 }

@@ -12,29 +12,40 @@ Promise
         createMario(),
         loadLevel('1-1')
     ])
-    .then(([mario , level]) => {
+    .then(([mario, level]) => {
 
         level.entities.add(mario);
 
         const SPACE = 32;
         const input = new Keyboard();
         input.addMapping(SPACE, function(keyState) {
-            if(keyState === 1){
+            if (keyState === 1) {
                 mario.jump.start();
-            }
-            else {
+            } else {
                 mario.jump.cancel();
             }
         });
         input.listenTo(window);
 
-        const gravity = 20;
+        // debug
+        ['mousedown', 'mousemove'].forEach(eventName => {
+            canvas.addEventListener(eventName, e => {
+
+                if (e.buttons === 1) {
+                    mario.vel.set(0,0);
+                    mario.pos.set(e.offsetX, e.offsetY);
+                }
+
+            });
+        })
+
+        const gravity = 2000;
         mario.pos.set(64, 64);
 
         const timer = new Timer();
         timer.update = function(deltaTime) {
             level.update(deltaTime);
-            mario.vel.y += gravity * deltaTime; 
+            mario.vel.y += gravity * deltaTime;
             level.comp.draw(context);
         };
 
