@@ -6,8 +6,15 @@ export default class TileCollider {
     }
 
     checkX(entity) {
-        const matches = this.resolver.searchByRange(
-            entity.pos.x, entity.pos.x + entity.size.x,
+        let x;
+        if (entity.vel.x > 0) {
+            x = entity.pos.x + entity.size.x;
+        } else if (entity.vel.x < 0) {
+            x = entity.pos.x;
+        } else { return };
+
+         const matches = this.resolver.searchByRange(
+            x, x,
             entity.pos.y, entity.pos.y + entity.size.y);
 
         matches.forEach(m => {
@@ -30,10 +37,19 @@ export default class TileCollider {
     }
 
     checkY(entity) {
+        let y;
+        if (entity.vel.y > 0) {
+            y = entity.pos.y + entity.size.y;
+        } else if (entity.vel.y < 0) {
+            y = entity.pos.y;
+        } else {
+            return;
+        }
+
         // const match = this.resolver.searchByPosition(entity.pos.x, entity.pos.y);
         const matches = this.resolver.searchByRange(
             entity.pos.x, entity.pos.x + entity.size.x,
-            entity.pos.y, entity.pos.y + entity.size.y);
+            y, y);
 
         matches.forEach(m => {
 
@@ -47,7 +63,6 @@ export default class TileCollider {
                     entity.vel.y = 0;
                 }
             } else if (entity.vel.y < 0) {
-                // console.log(entity.pos.y, m.y2);
                 if (entity.pos.y < m.y2) {
                     entity.pos.y = m.y2;
                     entity.vel.y = 0;
@@ -55,9 +70,4 @@ export default class TileCollider {
             }
         });
     }
-
-    // test(entity) {
-    // 	this.checkX(entity);
-    //     this.checkY(entity);
-    // }
 }

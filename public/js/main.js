@@ -3,6 +3,7 @@ import { createMario } from './Entities.js';
 import Timer from './Timer.js';
 import Keyboard from './KeyboardState.js';
 import { createDebugCollisionLayer } from './layers.js';
+import {setupKeyBoard} from './input.js';
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
@@ -15,28 +16,10 @@ Promise
     .then(([mario, level]) => {
 
         level.entities.add(mario);
-
-        const SPACE = 32;
-        const input = new Keyboard();
-        input.addMapping('Space', function(keyState) {
-            // debugger;
-            if (keyState === 1) {
-                mario.jump.start();
-            } else {
-                mario.jump.cancel();
-            }
-        });
-
-        input.addMapping('ArrowLeft', function(keyState) {
-            mario.go.direction = -keyState;
-        });
-        input.addMapping('ArrowRight', function(keyState) {
-            mario.go.direction = keyState;
-        });
-
+        
+        const input = setupKeyBoard(mario);
         input.listenTo(window);
 
-        // debug
         ['mousedown', 'mousemove'].forEach(eventName => {
             canvas.addEventListener(eventName, e => {
 
