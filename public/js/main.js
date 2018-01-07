@@ -1,8 +1,8 @@
-import Compositor from './Compositor.js';
 import { loadLevel } from './loaders.js';
 import { createMario } from './Entities.js';
 import Timer from './Timer.js';
 import Keyboard from './KeyboardState.js';
+import { createDebugCollisionLayer } from './layers.js';
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
@@ -32,13 +32,14 @@ Promise
             canvas.addEventListener(eventName, e => {
 
                 if (e.buttons === 1) {
-                    mario.vel.set(0,0);
+                    mario.vel.set(0, 0);
                     mario.pos.set(e.offsetX, e.offsetY);
                 }
-
             });
-        })
-
+        });
+        
+        level.comp.layers.push(createDebugCollisionLayer(level));
+        
         const gravity = 2000;
         mario.pos.set(64, 64);
 
@@ -48,6 +49,7 @@ Promise
             mario.vel.y += gravity * deltaTime;
             level.comp.draw(context);
         };
+
 
         timer.start();
     });
