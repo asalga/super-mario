@@ -16,8 +16,8 @@ export function createMario() {
             mario.addTrait(new Go);
 
             mario.draw = function(context) {
-                sprite.draw('idle', context, this.pos.x, this.pos.y);
-            }
+                sprite.draw('idle', context, 0, 0);
+            };
 
             return mario;
         });

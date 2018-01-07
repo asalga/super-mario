@@ -40,7 +40,7 @@ export function loadLevel(name) {
             const backgroundLayer = createBackgroundLayer(level, backgroundSprites);
             level.comp.layers.push(backgroundLayer);
 
-            const spriteLayer = createSpriteLayer(level.entities);
+            const spriteLayer = createSpriteLayer(level.entities, 64);
             level.comp.layers.push(spriteLayer);
 
             return level;

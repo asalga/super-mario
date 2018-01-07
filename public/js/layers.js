@@ -1,6 +1,6 @@
 export function createBackgroundLayer(level, sprites) {
     const buffer = document.createElement('canvas');
-    buffer.width = 256;
+    buffer.width = 2048;
     buffer.height = 240;
     const context = buffer.getContext('2d');
 
@@ -9,15 +9,25 @@ export function createBackgroundLayer(level, sprites) {
         sprites.drawTile(tile.name, context, x, y);
     });
 
-    return function drawBackgroundLayer(context) {
-        context.drawImage(buffer, 0, 0);
+    return function drawBackgroundLayer(context, camera) {
+        context.drawImage(buffer, -camera.pos.x, -camera.pos.y);
     }
 }
 
-// entities is a set
-export function createSpriteLayer(entitySet) {
-    return function(context) {
-        entitySet.forEach(e => e.draw(context));
+export function createSpriteLayer(entitySet, size = 64) {
+
+    const spriteBuffer = document.createElement('canvas');
+    spriteBuffer.width = size;
+    spriteBuffer.height = size;
+    const spriteBufferContext = spriteBuffer.getContext('2d');
+
+    return function(context, camera) {
+        entitySet.forEach((entity) => {
+            entity.draw(spriteBufferContext);
+
+            context.drawImage(spriteBuffer, entity.pos.x - camera.pos.x,
+                entity.pos.y - camera.pos.y);
+        });
     }
 }
 
@@ -32,12 +42,15 @@ export function createDebugCollisionLayer(level) {
         return getByIndexOrig.call(resolver, x, y);
     };
 
-    return function drawCollision(context) {
+    return function drawCollision(context, camera) {
 
         resolvedTiles.forEach(({ x, y }) => {
             context.strokeStyle = 'blue';
             context.beginPath();
-            context.rect(x * tileSize, y * tileSize, tileSize, tileSize);
+            context.rect(
+                x * tileSize - camera.pos.x,
+                y * tileSize - camera.pos.y,
+                tileSize, tileSize);
             context.stroke();
         });
 
@@ -45,7 +58,10 @@ export function createDebugCollisionLayer(level) {
 
         level.entities.forEach((e) => {
             context.beginPath();
-            context.rect(e.pos.x, e.pos.y, e.size.x, e.size.y);
+            context.rect(
+                e.pos.x - camera.pos.x,
+                e.pos.y - camera.pos.y,
+                e.size.x, e.size.y);
             context.stroke();
         });
 
