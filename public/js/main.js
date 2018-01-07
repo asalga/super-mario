@@ -18,13 +18,22 @@ Promise
 
         const SPACE = 32;
         const input = new Keyboard();
-        input.addMapping(SPACE, function(keyState) {
+        input.addMapping('Space', function(keyState) {
+            // debugger;
             if (keyState === 1) {
                 mario.jump.start();
             } else {
                 mario.jump.cancel();
             }
         });
+
+        input.addMapping('ArrowLeft', function(keyState) {
+            mario.go.direction = -keyState;
+        });
+        input.addMapping('ArrowRight', function(keyState) {
+            mario.go.direction = keyState;
+        });
+
         input.listenTo(window);
 
         // debug

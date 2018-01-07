@@ -14,10 +14,14 @@ export default class Level {
 
     // update all the things in the level
     update(deltaTime) {
-        this.entities.forEach(e => {
-            e.update(deltaTime);
-            // this.tileCollider.test(e);
-            this.tileCollider.checkY(e);
+        this.entities.forEach(entity => {
+            entity.update(deltaTime);
+
+            entity.pos.x += entity.vel.x * deltaTime;
+            this.tileCollider.checkX(entity);
+
+            entity.pos.y += entity.vel.y * deltaTime;
+            this.tileCollider.checkY(entity);
         });
     }
 }

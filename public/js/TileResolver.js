@@ -33,11 +33,15 @@ export default class TileResolver {
         if (tile) {
             const y1 = indexY * this.tileSize;
             const y2 = y1 + this.tileSize;
+            const x1 = indexX * this.tileSize;
+            const x2 = x1 + this.tileSize;
 
             return {
                 tile,
                 y1,
-                y2
+                y2,
+                x1,
+                x2
             }
         }
     }

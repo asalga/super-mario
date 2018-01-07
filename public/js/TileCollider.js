@@ -5,6 +5,30 @@ export default class TileCollider {
         this.resolver = new TileResolver(matrix, 16);
     }
 
+    checkX(entity) {
+        const matches = this.resolver.searchByRange(
+            entity.pos.x, entity.pos.x + entity.size.x,
+            entity.pos.y, entity.pos.y + entity.size.y);
+
+        matches.forEach(m => {
+            if (m.tile.name !== 'ground') {
+                return;
+            }
+
+            if (entity.vel.x > 0) {
+                if (entity.pos.x + entity.size.x > m.x1) {
+                    entity.pos.x = m.x1 - entity.size.x;
+                    entity.vel.x = 0;
+                }
+            } else if (entity.vel.x < 0) {
+                if (entity.pos.x < m.x2) {
+                    entity.pos.x = m.x2;
+                    entity.vel.x = 0;
+                }
+            }
+        });
+    }
+
     checkY(entity) {
         // const match = this.resolver.searchByPosition(entity.pos.x, entity.pos.y);
         const matches = this.resolver.searchByRange(
@@ -32,7 +56,8 @@ export default class TileCollider {
         });
     }
 
-    test(entity) {
-        this.checkY(entity);
-    }
+    // test(entity) {
+    // 	this.checkX(entity);
+    //     this.checkY(entity);
+    // }
 }

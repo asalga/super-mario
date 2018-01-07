@@ -9,7 +9,6 @@ export class Trait {
     }
 }
 
-
 export default class Entity {
     constructor() {
         this.pos = new Vec2;
