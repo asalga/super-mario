@@ -1,16 +1,36 @@
 export function createBackgroundLayer(level, sprites) {
+    const tiles = level.tiles.grid;
+    const resolver = level.tileCollider.resolver;
+
     const buffer = document.createElement('canvas');
-    buffer.width = 2048;
+    buffer.width = 256 + 16;
     buffer.height = 240;
     const context = buffer.getContext('2d');
 
-    // val, idx, arr
-    level.tiles.forEach(function(tile, x, y) {
-        sprites.drawTile(tile.name, context, x, y);
-    });
+    // draw subset of tile matrix
+    function redraw(startIndex, endIndex) {
+        for (let x = startIndex; x <= endIndex; ++x) {
+
+            const col = tiles[x];
+            if (col) {
+                col.forEach((tile, y) => {
+                    sprites.drawTile(tile.name, context, x - startIndex, y);
+                });
+            }
+        }
+    };
+
+    // 
+    // level.tiles.forEach(function(tile, x, y) {
+    //     sprites.drawTile(tile.name, context, x, y);
+    // });
 
     return function drawBackgroundLayer(context, camera) {
-        context.drawImage(buffer, -camera.pos.x, -camera.pos.y);
+        const drawWidth = resolver.toIndex(camera.size.x);
+        const drawFrom = resolver.toIndex(camera.pos.x);
+        const drawTo = drawFrom + drawWidth;
+        redraw(drawFrom, drawTo);
+        context.drawImage(buffer, -camera.pos.x % 16, -camera.pos.y);
     }
 }
 
@@ -44,8 +64,8 @@ export function createDebugCollisionLayer(level) {
 
     return function drawCollision(context, camera) {
 
+        context.strokeStyle = 'blue';
         resolvedTiles.forEach(({ x, y }) => {
-            context.strokeStyle = 'blue';
             context.beginPath();
             context.rect(
                 x * tileSize - camera.pos.x,
@@ -55,13 +75,13 @@ export function createDebugCollisionLayer(level) {
         });
 
         context.strokeStyle = 'red';
-
         level.entities.forEach((e) => {
             context.beginPath();
             context.rect(
                 e.pos.x - camera.pos.x,
                 e.pos.y - camera.pos.y,
-                e.size.x, e.size.y);
+                e.size.x,
+                e.size.y);
             context.stroke();
         });
 
@@ -69,4 +89,15 @@ export function createDebugCollisionLayer(level) {
     };
 };
 
-
+export function createCameraLayer(cameraToDraw) {
+    return function drawCameraRect(context, fromCamera) {
+        context.strokeStyle = 'rgba(255,0,255,255)';
+        context.beginPath();
+        context.rect(
+            cameraToDraw.pos.x - fromCamera.pos.x,
+            cameraToDraw.pos.y - fromCamera.pos.y,
+            cameraToDraw.size.x,
+            cameraToDraw.size.y);
+        context.stroke();
+    };
+}
