@@ -43,16 +43,18 @@ export function createBackgroundLayer(level, sprites) {
 
 export function createSpriteLayer(entitySet, size = 64) {
 
-    const spriteBuffer = document.createElement('canvas');
-    spriteBuffer.width = size;
-    spriteBuffer.height = size;
-    const spriteBufferContext = spriteBuffer.getContext('2d');
+    const spriteBuff = document.createElement('canvas');
+    spriteBuff.width = size;
+    spriteBuff.height = size;
+    const spriteBuffCtx = spriteBuff.getContext('2d');
 
     return function(context, camera) {
         entitySet.forEach((entity) => {
-            entity.draw(spriteBufferContext);
+            spriteBuffCtx.clearRect(0,0,size, size);
 
-            context.drawImage(spriteBuffer, entity.pos.x - camera.pos.x,
+            entity.draw(spriteBuffCtx);
+
+            context.drawImage(spriteBuff, entity.pos.x - camera.pos.x,
                 entity.pos.y - camera.pos.y);
         });
     }

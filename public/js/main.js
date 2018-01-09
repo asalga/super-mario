@@ -12,11 +12,11 @@ const context = canvas.getContext('2d');
 Promise
     .all([
         createMario(),
+        createMario(),
         loadLevel('1-1')
     ])
-    .then(([mario, level]) => {
+    .then(([mario, mario2,level]) => {
         const camera = new Camera();
-        window.camera = camera;
 
         // level.comp.layers.push(
             // createDebugCollisionLayer(level, camera),
@@ -25,11 +25,17 @@ Promise
 
         setupMouseControl(canvas, camera, mario);
 
+        mario2.pos.set(0, 64);
+        level.entities.add(mario2);
+
+
         mario.pos.set(64, 64);
         level.entities.add(mario);
 
         const input = setupKeyBoard(mario);
+        const input2 = setupKeyBoard(mario2);
         input.listenTo(window);
+        input2.listenTo(window);
 
         const timer = new Timer();
         timer.update = function(deltaTime) {

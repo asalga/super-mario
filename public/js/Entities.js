@@ -13,8 +13,19 @@ export function createMario() {
             mario.addTrait(new Jump);
             mario.addTrait(new Go);
 
+            let frames = ['run-1', 'run-2', 'run-3'];
+
+            // route sprite name
+            function routeFrame(mario){
+                if(mario.go.direction !== 0){
+                    let f = Math.ceil(mario.go.distance) % 3;
+                    return frames[f];
+                }
+                return 'idle';
+            }
+
             mario.draw = function(context) {
-                sprite.draw('run-1', context, 0, 0);
+                sprite.draw(routeFrame(this), context, 0, 0);
             };
 
             return mario;
