@@ -22,7 +22,7 @@ export function createBackgroundLayer(level, sprites) {
             if (col) {
                 col.forEach((tile, y) => {
 
-                    if (tile.name === 'chance') {
+                    if (sprites.animations.has(tile.name)) {
                         sprites.drawAnimAtIndex(tile.name, offscreenContext, x - startIndex, y, level.totalTime);
                     } else {
                         sprites.drawTileAtIndex(tile.name, offscreenContext, x - startIndex, y);
