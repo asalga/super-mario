@@ -21,7 +21,7 @@ export function createBackgroundLayer(level, sprites) {
             const col = tiles[x];
             if (col) {
                 col.forEach((tile, y) => {
-                    sprites.drawTile(tile.name, offscreenContext, x - startIndex, y);
+                    sprites.drawTileAtIndex(tile.name, offscreenContext, x - startIndex, y);
                 });
             }
         }
