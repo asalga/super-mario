@@ -11,9 +11,9 @@ export function createBackgroundLayer(level, sprites) {
     let startIndex, endIndex;
 
     function redraw(drawFrom, drawTo) {
-        if (startIndex === drawFrom && endIndex === drawTo) {
-            return;
-        }
+        // if (startIndex === drawFrom && endIndex === drawTo) {
+        //     return;
+        // }
         startIndex = drawFrom;
         endIndex = drawTo;
 
@@ -21,7 +21,12 @@ export function createBackgroundLayer(level, sprites) {
             const col = tiles[x];
             if (col) {
                 col.forEach((tile, y) => {
-                    sprites.drawTileAtIndex(tile.name, offscreenContext, x - startIndex, y);
+
+                    if (tile.name === 'chance') {
+                        sprites.drawAnimAtIndex(tile.name, offscreenContext, x - startIndex, y, level.totalTime);
+                    } else {
+                        sprites.drawTileAtIndex(tile.name, offscreenContext, x - startIndex, y);
+                    }
                 });
             }
         }
@@ -50,7 +55,7 @@ export function createSpriteLayer(entitySet, size = 64) {
 
     return function(context, camera) {
         entitySet.forEach((entity) => {
-            spriteBuffCtx.clearRect(0,0,size, size);
+            spriteBuffCtx.clearRect(0, 0, size, size);
 
             entity.draw(spriteBuffCtx);
 

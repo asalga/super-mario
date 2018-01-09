@@ -3,12 +3,17 @@
     "tileW": 16,
     "tileH": 16,
     "tiles": [
-    {
-        "name": "ground",
-        "index": [0, 2]
-    },
-    {
-        "name": "sky",
-        "index": [13, 7]
-    }]
+        {
+            "name": "ground",
+            "index": [0, 2]
+        },
+        {
+            "name": "sky",
+            "index": [13, 7]
+        },
+        {
+            "name": "chance",
+            "index": [1, 1]
+        }
+    ]
 }

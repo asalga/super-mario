@@ -1,10 +1,18 @@
+import { createAnim } from './anim.js';
+
 export default class SpriteSheet {
 
     constructor(image, width, height) {
         this.image = image;
         this.width = width;
         this.height = height;
+
         this.tiles = new Map;
+        this.animations = new Map;
+    }
+
+    defineAnim(name, animation) {
+        this.animations.set(name, animation);
     }
 
     define(name, x, y, width, height) {
@@ -39,6 +47,12 @@ export default class SpriteSheet {
     draw(name, context, x, y, flip = false) {
         const buffer = this.tiles.get(name)[flip ? 1 : 0];
         context.drawImage(buffer, x, y);
+    }
+
+    drawAnimAtIndex(name, context, x, y, distance) {
+        const anim = this.animations.get(name);
+        const frameName = anim(distance);
+        this.drawTileAtIndex(frameName, context, x, y, 0);
     }
 
     drawTileAtIndex(name, context, x, y) {

@@ -1,6 +1,7 @@
 import Level from './Level.js';
 import { createBackgroundLayer, createSpriteLayer } from './layers.js';
 import SpriteSheet from './SpriteSheet.js';
+import { createAnim } from './anim.js';
 
 export function loadJson(url) {
     return fetch(url).then(r => r.json());
@@ -40,13 +41,20 @@ export function loadSpriteSheet(name) {
                 });
             }
 
-            if(sheetSpec.frames){
-                 sheetSpec.frames.forEach(frameSpec => {
-                    sprites.define(frameSpec.name,...frameSpec.rect);
+            if (sheetSpec.frames) {
+                sheetSpec.frames.forEach(frameSpec => {
+                    sprites.define(frameSpec.name, ...frameSpec.rect);
                 });
             }
 
+            if (sheetSpec.animations) {
+                sheetSpec.animations.forEach(animSpec => {
+                    const anim = createAnim(animSpec.frames, animSpec.frameLength);
+                    sprites.defineAnim(animSpec.name, anim);
+                });
+            }
 
+            // console.log(sprites );
             return sprites;
         });
 }

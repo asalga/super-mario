@@ -9,6 +9,19 @@ export default class Timer {
         this.updateProxy = function(time) {
             accTime += (time - lastTime) / 1000;
 
+            // Prevent slowdown if game runs in background 
+            // for a long time.
+
+            // If we switch tabs, the simulation will continiue to run
+            // which means, we may return to the simulation with several
+            // minutes worth of accumulated time.
+            //
+            // We want to prevent the while loop from processing all this time.
+            if(accTime > 1){
+                console.warn(`accumulated time was ${accTime}`);
+                accTime = 1;
+            }
+
             let test = 0;
             while (accTime > timeStep) {
                 test++;
