@@ -18,10 +18,10 @@ Promise
         const camera = new Camera();
         window.camera = camera;
 
-        level.comp.layers.push(
-            createDebugCollisionLayer(level, camera),
-            createCameraLayer(camera)
-        );
+        // level.comp.layers.push(
+            // createDebugCollisionLayer(level, camera),
+            // createCameraLayer(camera)
+        // );
 
         setupMouseControl(canvas, camera, mario);
 
