@@ -2,7 +2,7 @@ import Level from './Level.js';
 import { createBackgroundLayer, createSpriteLayer } from './layers.js';
 import SpriteSheet from './SpriteSheet.js';
 
-function loadJson(url) {
+export function loadJson(url) {
     return fetch(url).then(r => r.json());
 }
 
@@ -17,23 +17,35 @@ export function loadImage(url) {
     });
 }
 
-
-function loadSpriteSheet(name) {
-
+/*
+ */
+export function loadSpriteSheet(name) {
     return loadJson(`/sprites/${name}.json`)
         .then(sheetSpec => Promise.all([
             sheetSpec,
             loadImage(sheetSpec.imageURL)
         ]))
         .then(([sheetSpec, image]) => {
-            const sprites = new SpriteSheet(image, sheetSpec.tileW, sheetSpec.tileH);
+            const sprites = new SpriteSheet(
+                image,
+                sheetSpec.tileW,
+                sheetSpec.tileH);
 
-            sheetSpec.tiles.forEach(sprite => {
-                sprites.defineTile(
-                    sprite.name,
-                    sprite.index[0],
-                    sprite.index[1]);
-            });
+            if (sheetSpec.tiles) {
+                sheetSpec.tiles.forEach(sprite => {
+                    sprites.defineTile(
+                        sprite.name,
+                        sprite.index[0],
+                        sprite.index[1]);
+                });
+            }
+
+            if(sheetSpec.frames){
+                 sheetSpec.frames.forEach(frameSpec => {
+                    sprites.define(frameSpec.name,...frameSpec.rect);
+                });
+            }
+
 
             return sprites;
         });
