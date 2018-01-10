@@ -11,9 +11,6 @@ export function createBackgroundLayer(level, sprites) {
     let startIndex, endIndex;
 
     function redraw(drawFrom, drawTo) {
-        // if (startIndex === drawFrom && endIndex === drawTo) {
-        //     return;
-        // }
         startIndex = drawFrom;
         endIndex = drawTo;
 
