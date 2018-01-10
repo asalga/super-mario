@@ -5,20 +5,36 @@ export default class Go extends Trait {
         super('go');
 
         this.direction = 0;
-        this.speed = 6000;
+        this.accel = 400;
+        this.decel = 300;
+        this.dragFactor = 1 / 2000;
         this.distance = 0;
         this.heading = 1;
     }
 
     update(entity, deltaTime) {
-        entity.vel.x = this.direction * this.speed * deltaTime;
+        const vel = entity.vel;
+        const absX = Math.abs(vel.x);
 
-        if (this.direction) {
+        if (this.direction !== 0) {
+            vel.x += this.accel * deltaTime * this.direction;
             this.heading = this.direction;
-            this.distance += Math.abs(entity.vel.x * deltaTime);
-        } else {
+            this.distance += absX * deltaTime;
+        }
+        // we don't want to slide too long after we 
+        // release the key, so decelerate fast.
+        else if (vel.x !== 0) {
+            // !!
+            const d = (vel.x > 0 ? -1 : 1) * Math.min(absX, this.decel * deltaTime);
+            // console.log(absX, this.decel* deltaTime, d);
+            vel.x += d;
+        }
+        // stopped
+        else {
             this.distance = 0;
         }
-        console.log(this.direction);
+
+        let drag = this.dragFactor * vel.x * absX;
+        vel.x -= drag;
     }
 }
