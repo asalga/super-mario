@@ -17,7 +17,7 @@ export function createMario() {
             let resolveAnim = createAnim([1, 2, 3].map(v => 'run-' + v), 10);
 
             function routeFrame(mario) {
-                if (mario.go.direction !== 0) {
+                if (mario.go.distance > 0) {
                     return resolveAnim(mario.go.distance);
                 }
                 return 'idle';

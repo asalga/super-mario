@@ -1,3 +1,5 @@
+
+
 export default class Timer {
 
     constructor(timeStep = 1 / 60) {
@@ -6,8 +8,8 @@ export default class Timer {
             lastTime = 0,
             self = this;
 
-        this.updateProxy = function(time) {
-            accTime += (time - lastTime) / 1000;
+        this.updateProxy = function(now) {
+            accTime += (now - lastTime) / 1000;
 
             // Prevent slowdown if game runs in background 
             // for a long time.
@@ -29,7 +31,7 @@ export default class Timer {
                 accTime -= timeStep;
             }
 
-            lastTime = time;
+            lastTime = now;
             self.enqueue();
         };
     }

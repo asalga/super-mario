@@ -19,7 +19,7 @@ export default class Go extends Trait {
         if (this.direction !== 0) {
             vel.x += this.accel * deltaTime * this.direction;
             this.heading = this.direction;
-            this.distance += absX * deltaTime;
+            
         }
         // we don't want to slide too long after we 
         // release the key, so decelerate fast.
@@ -36,5 +36,8 @@ export default class Go extends Trait {
 
         let drag = this.dragFactor * vel.x * absX;
         vel.x -= drag;
+
+        // !!
+        this.distance += absX * deltaTime;
     }
 }
